@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "LMS Service",
+    "_postman_id": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+    "description": "Collection for LMS Service APIs (Serverless Offline)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create HowTo Video",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Sample Video\",\n  \"videoUrl\": \"https://example.com/video.mp4\",\n  \"imageUrl\": \"https://example.com/image.jpg\",\n  \"status\": \"enabled\",\n  \"isPasswordProtected\": false,\n  \"password\": null,\n  \"createdBy\": \"admin\",\n  \"updatedBy\": \"admin\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/lms/createHowToVideos",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["lms", "createHowToVideos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All HowTo Videos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/lms/getHowToVideos",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["lms", "getHowToVideos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update HowTo Video",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Video Title\",\n  \"status\": \"disabled\",\n  \"isPasswordProtected\": true,\n  \"password\": \"secret\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/lms/updateHowToVideo/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["lms", "updateHowToVideo", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Analytics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/lms/analytics",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["lms", "analytics"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

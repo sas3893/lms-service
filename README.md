@@ -1,95 +1,74 @@
-# Serverless - AWS Node.js Typescript
+# LMS Service
 
-This project has been generated using the `aws-nodejs-typescript` template from the [Serverless framework](https://www.serverless.com/).
+A Serverless project to manage video content with CRUD APIs and analytics.
 
-For detailed instructions, please refer to the [documentation](https://www.serverless.com/framework/docs/providers/aws/).
+---
 
-## Installation/deployment instructions
+## Table of Contents
 
-Depending on your preferred package manager, follow the instructions below to deploy your project.
+1. [Prerequisites](#prerequisites)  
+2. [Clone Repository](#clone-repository)  
+3. [Install Dependencies](#install-dependencies)  
+4. [Configure Environment Variables](#configure-environment-variables)  
+5. [Database Setup](#database-setup)  
+6. [Run Migrations](#run-migrations)  
+7. [Run Project Locally](#run-project-locally)  
+8. [API Endpoints](#api-endpoints)  
+9. [Postman Collection](#postman-collection)  
 
-> **Requirements**: NodeJS `lts/fermium (v.14.15.0)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
+---
 
-### Using NPM
+## Prerequisites
 
-- Run `npm i` to install the project dependencies
-- Run `npx sls deploy` to deploy this stack to AWS
+- Node.js >= 18.x  
+- npm >= 9.x  
+- MySQL server running locally  
+- Serverless Frame
 
-### Using Yarn
+## Install Dependencies
 
-- Run `yarn` to install the project dependencies
-- Run `yarn sls deploy` to deploy this stack to AWS
+npm install
 
-## Test your service
+## If you face peer dependency issues, you can try:
 
-This template contains a single lambda function triggered by an HTTP request made on the provisioned API Gateway REST API `/hello` route with `POST` method. The request body must be provided as `application/json`. The body structure is tested by API Gateway against `src/functions/hello/schema.ts` JSON-Schema definition: it must contain the `name` property.
+npm install --legacy-peer-deps
 
-- requesting any other path than `/hello` with any other method than `POST` will result in API Gateway returning a `403` HTTP error code
-- sending a `POST` request to `/hello` with a payload **not** containing a string property named `name` will result in API Gateway returning a `400` HTTP error code
-- sending a `POST` request to `/hello` with a payload containing a string property named `name` will result in API Gateway returning a `200` HTTP status code with a message saluting the provided name and the detailed event processed by the lambda
+## Configure Environment Variables
+## Create a .env file in the root folder:
 
-> :warning: As is, this template, once deployed, opens a **public** endpoint within your AWS account resources. Anybody with the URL can actively execute the API Gateway endpoint and the corresponding lambda. You should protect this endpoint with the authentication method of your choice.
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASS=Dummy
+DB_NAME=lms
 
-### Locally
+## Database Setup
+## Create a database:
 
-In order to test the hello function locally, run the following command:
+CREATE DATABASE lms;
+## Check that your MySQL credentials match the .env file.
 
-- `npx sls invoke local -f hello --path src/functions/hello/mock.json` if you're using NPM
-- `yarn sls invoke local -f hello --path src/functions/hello/mock.json` if you're using Yarn
+## Run TypeORM Migrations
+## Generate or run migrations to create the tables:
 
-Check the [sls invoke local command documentation](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) for more information.
+# Run existing migrations
+npm run migration:run
 
-### Remotely
+# (Optional) Generate new migration
+npm run migration:generate -- -n <MigrationName>
 
-Copy and replace your `url` - found in Serverless `deploy` command output - and `name` parameter in the following `curl` command in your terminal or in Postman to test your newly deployed application.
+## Run Project Locally
+## Use Serverless Offline to simulate API Gateway and Lambda:
+npm run offline
 
-```
-curl --location --request POST 'https://myApiEndpoint/dev/hello' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "Frederic"
-}'
-```
+# By default, the APIs will run at:
+http://localhost:3000
 
-## Template features
+## API Endpoints
 
-### Project structure
-
-The project code base is mainly located within the `src` folder. This folder is divided in:
-
-- `functions` - containing code base and configuration for your lambda functions
-- `libs` - containing shared code base between your lambdas
-
-```
-.
-├── src
-│   ├── functions               # Lambda configuration and source code folder
-│   │   ├── hello
-│   │   │   ├── handler.ts      # `Hello` lambda source code
-│   │   │   ├── index.ts        # `Hello` lambda Serverless configuration
-│   │   │   ├── mock.json       # `Hello` lambda input parameter, if any, for local invocation
-│   │   │   └── schema.ts       # `Hello` lambda input event JSON-Schema
-│   │   │
-│   │   └── index.ts            # Import/export of all lambda configurations
-│   │
-│   └── libs                    # Lambda shared code
-│       └── apiGateway.ts       # API Gateway specific helpers
-│       └── handlerResolver.ts  # Sharable library for resolving lambda handlers
-│       └── lambda.ts           # Lambda middleware
-│
-├── package.json
-├── serverless.ts               # Serverless service file
-├── tsconfig.json               # Typescript compiler configuration
-├── tsconfig.paths.json         # Typescript paths
-└── webpack.config.js           # Webpack configuration
-```
-
-### 3rd party libraries
-
-- [json-schema-to-ts](https://github.com/ThomasAribart/json-schema-to-ts) - uses JSON-Schema definitions used by API Gateway for HTTP request validation to statically generate TypeScript types in your lambda's handler code base
-- [middy](https://github.com/middyjs/middy) - middleware engine for Node.Js lambda. This template uses [http-json-body-parser](https://github.com/middyjs/middy/tree/master/packages/http-json-body-parser) to convert API Gateway `event.body` property, originally passed as a stringified JSON, to its corresponding parsed object
-- [@serverless/typescript](https://github.com/serverless/typescript) - provides up-to-date TypeScript definitions for your `serverless.ts` service file
-
-### Advanced usage
-
-Any tsconfig.json can be used, but if you do, set the environment variable `TS_NODE_CONFIG` for building the application, eg `TS_NODE_CONFIG=./tsconfig.app.json npx serverless webpack`
+| Method | Path                       | Description                                                                                                 |
+| ------ | -------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| POST   | /lms/createHowToVideos     | Create a new video entry                                                                                    |
+| GET    | /lms/getHowToVideos        | Fetch all videos                                                                                            |
+| PUT    | /lms/updateHowToVideo/\:id | Update video details                                                                                        |
+| GET    | /lms/analytics             | Return analytics including total videos, count by status, password-protected count, and top 5 recent videos |
