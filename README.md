@@ -11,7 +11,7 @@ A Serverless project to manage video content with CRUD APIs and analytics.
 3. [Install Dependencies](#install-dependencies)  
 4. [Configure Environment Variables](#configure-environment-variables)  
 5. [Database Setup](#database-setup)  
-6. [Run Migrations](#run-migrations)  
+6. [Run Migrations](#run-existing-migrations)  
 7. [Run Project Locally](#run-project-locally)  
 8. [API Endpoints](#api-endpoints)  
 9. [Postman Collection](#postman-collection)  
@@ -51,7 +51,7 @@ CREATE DATABASE lms;
 ## Run TypeORM Migrations
 ## Generate or run migrations to create the tables:
 
-# Run existing migrations
+## Run existing migrations
 npm run migration:run
 
 # (Optional) Generate new migration
@@ -72,3 +72,7 @@ http://localhost:3000
 | GET    | /lms/getHowToVideos        | Fetch all videos                                                                                            |
 | PUT    | /lms/updateHowToVideo/\:id | Update video details                                                                                        |
 | GET    | /lms/analytics             | Return analytics including total videos, count by status, password-protected count, and top 5 recent videos |
+
+## Postman Collection
+
+Added a JSON file at https://github.com/sas3893/lms-service/blob/b3b5dd54971d95f1a559ed567e806ce87ffdcd2d/src/utils/Service.postman_collection.json
