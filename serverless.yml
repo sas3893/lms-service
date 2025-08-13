@@ -1,0 +1,57 @@
+service: lms-service
+frameworkVersion: '>=3.0.0 <5.0.0'
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude: ['aws-sdk']
+    target: node18
+    platform: node
+    concurrency: 10
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  environment:
+    DB_HOST: localhost
+    DB_PORT: 3306
+    DB_USER: root
+    DB_PASS: Mylife@531100
+    DB_NAME: lms
+
+
+functions:
+  createHowToVideos:
+    handler: src/handlers/createHowToVideo.main
+    events:
+      - httpApi:
+          path: /lms/createHowToVideos
+          method: post
+
+  getHowToVideos:
+    handler: src/handlers/getHowToVideos.main
+    events:
+      - httpApi:
+          path: /lms/getHowToVideos
+          method: get
+
+  updateHowToVideo:
+    handler: src/handlers/updateHowToVideo.main
+    events:
+      - httpApi:
+          path: /lms/updateHowToVideo/{id}
+          method: put
+
+  getAnalytics:
+    handler: src/handlers/getAnalytics.main
+    events:
+      - httpApi:
+          path: /lms/analytics
+          method: get
